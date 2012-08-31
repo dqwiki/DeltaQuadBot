@@ -42,7 +42,7 @@ def getBlockInfo(IP):
                 anononly = reg[u'anononly']
                 anononly = "{{done|Yes}}"
         except:
-                if not isUser:anononly = "N/A"
+                if isUser:anononly = "N/A"
                 else:anononly = "{{notdone|No}}"
         try:
             nocreate = reg[u'nocreate']
