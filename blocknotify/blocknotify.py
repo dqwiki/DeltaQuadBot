@@ -11,7 +11,7 @@ else:sys.path.append(localconfig.linuxpath)
 import wikipedia
 import json
 def main():
-    globe.getUserList()
+    globe.getBlockList()
 if not globe.startAllowed():
         print "System not allowed to start"
         sys.exit(1)

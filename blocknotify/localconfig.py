@@ -6,11 +6,10 @@ winpath = "C:\\pywikipedia\\"#Windows path for pywikipedia, need "\\" for folder
 linuxpath = "/home/deltaquad/pywikipedia/pywikipedia"
 
 ##On Wiki locations
-rawlocation = "Wikipedia:IP block exemption/log/Raw"
-listlocation = "Wikipedia:IP block exemption/log"
-gopage = "User:DeltaQuad/IPBE/Run"
+pagelocation = "User:DeltaQuad/UnblockTable"
+gopage = "User:DeltaQuad/Unblock/Run"
 
 #Edit Summary
-summary = "[[User:DeltaQuadBot|DeltaQuadBot]] Task IPBE listing."
+summary = "[[User:DeltaQuadBot|DeltaQuadBot]] Task Unblock List."
 
 

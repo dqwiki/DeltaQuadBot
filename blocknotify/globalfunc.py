@@ -33,17 +33,17 @@ def getBlockInfo(IP):
         reason = reg[u'reason']
         #templates
         if "{{" in reason:
-            reason = reason.replace("{{","{{tl|")
-            print reason
-        else:print "NO TEMPLATE ISSUE"
+                reason = reason.replace("{{","{{tl|")
         try:
-            autoblock = reg[u'automatic']
-            autoblock = "{{done|Yes}}"
+                autoblock = reg[u'automatic']
+                autoblock = "{{done|Yes}}"
         except:autoblock = "{{Notdone|No}}"
         try:
-            anononly = reg[u'anononly']
-            anononly = "{{done|Yes}}"
-        except:anononly = "{{Notdone|No}}"
+                anononly = reg[u'anononly']
+                anononly = "{{done|Yes}}"
+        except:
+                if not isUser:anononly = "N/A"
+                else:anononly = "{{notdone|No}}"
         try:
             nocreate = reg[u'nocreate']
             nocreate = "{{Notdone|No}}"
@@ -79,18 +79,18 @@ def getBlockList():
 def buildtable(userlist):
     tabletop = """{| class="wikitable" style="text-align: center;"
 |-
-!ID!!User!!Blocking admin!!Starting!!Expiry!!Reason!!Autoblock!!Talkpage access!!Email block!!Anon. Only!!Account Creation Blocked!!Autoblock"""
+!ID!!User!!Blocking admin!!Starting!!Expiry!!Reason!!Autoblock!!Talkpage access!!Email block!!Anon. Only!!Account Creation Blocked!!Autoblock IP"""
     tablebody=""
     for user in userlist:
         intel = getBlockInfo(user)
         tablebody += "\n|-\n|%s||[[User talk:%s]]||[[User:%s]]||%s||%s||%s||%s||%s||%s||%s||%s||%s" % (intel[0], intel[1], intel[2], intel[3], intel[4], intel[5], intel[6], intel[7], intel[8], intel[9], intel[10], intel[11])
     table = tabletop + tablebody + "\n|}"
-    print table
-def sendPage(text, txtformat):
+    sendPage(table)
+def sendPage(text):
     #print text
     summary = localconfig.summary
     site = wikipedia.getSite()
-    pagename = localconfig.rawlocation
+    pagename = localconfig.pagelocation
     page = wikipedia.Page(site, pagename)
     pagetxt = page.get()
     page.put(text, comment=summary)
@@ -103,4 +103,4 @@ def startAllowed():
                 return True
         else:
                 return False
-getBlockList()
+
