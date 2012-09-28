@@ -7,6 +7,7 @@ linuxpath = "/home/deltaquad/pywikipedia/pywikipedia"
 
 ##On Wiki locations
 pagelocation = "User:DeltaQuad/UnblockTable"
+rawlocation = "User:DeltaQuad/UnblockTable/Raw"
 gopage = "User:DeltaQuad/Unblock/Run"
 
 #Edit Summary

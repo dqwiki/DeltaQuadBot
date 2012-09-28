@@ -85,15 +85,15 @@ def buildtable(userlist):
         intel = getBlockInfo(user)
         tablebody += "\n|-\n|%s||[[User talk:%s]]||[[User:%s]]||%s||%s||%s||%s||%s||%s||%s||%s||%s" % (intel[0], intel[1], intel[2], intel[3], intel[4], intel[5], intel[6], intel[7], intel[8], intel[9], intel[10], intel[11])
     table = tabletop + tablebody + "\n|}"
-    sendPage(table)
-def sendPage(text):
-    #print text
-    summary = localconfig.summary
-    site = wikipedia.getSite()
-    pagename = localconfig.pagelocation
-    page = wikipedia.Page(site, pagename)
-    pagetxt = page.get()
-    page.put(text, comment=summary)
+    sendPage(table, False)
+def sendPage(text, raw):
+        summary = localconfig.summary
+        site = wikipedia.getSite()
+        if raw:pagename = localconfig.rawlocation
+        else:pagename = localconfig.pagelocation
+        page = wikipedia.Page(site, pagename)
+        pagetxt = page.get()
+        page.put(text, comment=summary)
 def startAllowed():
         site = wikipedia.getSite()
         pagename = localconfig.gopage
@@ -103,4 +103,4 @@ def startAllowed():
                 return True
         else:
                 return False
-
+#def getAdminEmail():
