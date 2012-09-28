@@ -74,7 +74,7 @@ def perform_search(search_phrase,safe_page_list,safe_phrase_list):
             store_warning("not contained",safe_phrase)
  
     # returns a generator function with search results
-    search_results = site.search("\""+search_phrase+"\"",number=1e10)
+    search_results = site.search("\""+search_phrase+"\"",number=1e10,"0|10|100")
  
     checked_search_results = []
     num_returned = 0
