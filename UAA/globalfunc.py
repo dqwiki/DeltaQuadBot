@@ -53,6 +53,8 @@ def searchlist(line, listtype):
     if listtype == "bl":
         i=0
         while i < len(bl):
+            #print bl[i].split(":")[0] #Debug lines for when blacklist is having an issue parsing something. 
+            #print re.search(bl[i].split(":")[0], line.lower())
             if bl[i].split(":")[0] != "":check = re.search(bl[i].split(":")[0], line.lower())
             else: check = None
             if check == "None" or check == None:
