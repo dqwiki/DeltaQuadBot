@@ -270,18 +270,24 @@ def checkWait():
         waiters = waiters.replace("*{{User|","")
         waiters = waiters.split("\n")
         for waiter in waiters:
+                if checkRegisterTime(user, 7):
+                        print "User is older than 7 days, removing from waitlist."
+                        continue
                 if checkBlocked(waiter):#If user is blocked, skip putting them back on the list.
-                        print "Blocked"
-                elif getEditCount(waiter) == True:#If edited, send them to UAA
+                        print "User is blocked already, removing from wait list."
+                        continue
+                if getEditCount(waiter) == True:#If edited, send them to UAA
                         checkUser(waiter,False)
-                        print "Send to UAA"
-                elif waiter == "":holder=1#Non-existant user
-                else:
-                        if waiter in newlist:#If user already in the list, in case duplicates run over
-                                print "already in list"
-                        else:
-                                newlist = newlist + "\n*{{User|" + waiter + "}}"
-                                #print "\n*{{User|" + waiter + "}}"
+                        print "Sending to UAA from waitlist."
+                        continue
+                if waiter == "":#Non-existant user
+                        continue
+                if waiter in newlist:#If user already in the list, in case duplicates run over
+                        print "User is already in the waitlist."
+                        continue
+                #Continue if none of the other checks have issues with the conditions for staying on the waitlist
+                newlist = newlist + "\n*{{User|" + waiter + "}}"
+                #print "\n*{{User|" + waiter + "}}"
         summary = localconfig.editsumwait
         site = wikipedia.getSite()
         pagename = localconfig.waitlist
