@@ -46,7 +46,6 @@ def checkRegisterTime(user, maxDays):
         thenSeconds = time.mktime(then)
         nowSeconds = time.mktime(now)
         if thenSeconds < nowSeconds - maxSeconds:
-                print "True"
                 return True
         return False
 def searchlist(line, listtype):
