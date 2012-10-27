@@ -270,7 +270,7 @@ def checkWait():
         waiters = waiters.replace("*{{User|","")
         waiters = waiters.split("\n")
         for waiter in waiters:
-                if checkRegisterTime(user, 7):
+                if checkRegisterTime(waiter, 7):
                         print "User is older than 7 days, removing from waitlist."
                         continue
                 if checkBlocked(waiter):#If user is blocked, skip putting them back on the list.
