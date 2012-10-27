@@ -246,7 +246,8 @@ def getlist(req):
     if req == "wl":templist = templist.split("\n;")
     templistarray = cutup(templist)
     return templistarray
-def startAllowed():
+def startAllowed(override):
+        if override:return True
         site = wikipedia.getSite()
         pagename = localconfig.gopage
         page = wikipedia.Page(site, pagename)
@@ -270,6 +271,8 @@ def checkWait():
         waiters = waiters.replace("*{{User|","")
         waiters = waiters.split("\n")
         for waiter in waiters:
+                if waiter == "":#Non-existant user
+                        continue
                 if checkRegisterTime(waiter, 7):
                         print "User is older than 7 days, removing from waitlist."
                         continue
@@ -279,8 +282,6 @@ def checkWait():
                 if getEditCount(waiter) == True:#If edited, send them to UAA
                         checkUser(waiter,False)
                         print "Sending to UAA from waitlist."
-                        continue
-                if waiter == "":#Non-existant user
                         continue
                 if waiter in newlist:#If user already in the list, in case duplicates run over
                         print "User is already in the waitlist."
