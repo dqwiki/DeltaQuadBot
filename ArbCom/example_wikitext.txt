@@ -1,0 +1,12 @@
+{{Wikipedia:Arbitration Committee Elections December 2012/Menu}}{{shortcut|WP:ACELOG}}
+This is an alphabetically sorted list of editors who have voted. It will be updated periodically during the election. The earlier logs may be found in the article history. The real time log from which this data derives is at: [[Special:SecurePoll/list/80]].
+
+The updating process is designed to leave discussions intact, so you may discuss the voters below (for example, if questions arise about a voter's eligibility).
+
+== Log as of 00:51 (UTC) 05 Dec 2009 ==
+
+{{div col|cols=2}}
+{{div col end}}
+
+=== Orphaned comments ===
+blah.
