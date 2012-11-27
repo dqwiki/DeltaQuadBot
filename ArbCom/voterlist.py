@@ -8,7 +8,7 @@ def get_page(url):
     data = opener.open(request).read()
     return BeautifulSoup(data)
 
-base_url = "http://en.wikipedia.org/wiki/Special:SecurePoll/list/130"
+base_url = "http://en.wikipedia.org/wiki/Special:SecurePoll/list/259"
 
 def find_voter_info(row):
     stuff = {}
@@ -23,10 +23,10 @@ def find_voter_info(row):
     return stuff
 
 def format_voter_info(info):
-    return u"# {{User|%s}} %s" % (info['name'], info['timestamp'])
+    return u"# {{UserEL|%s}} %s" % (info['name'], info['timestamp'])
 
 def get_votes(page):
-    table = page.find('table', {'class': 'TablePager'})
+    table = page.find('table', {'class': 'mw-datatable TablePager'})
     rows = table.tbody.findAll('tr')
     voter_info = []
     for row in rows:

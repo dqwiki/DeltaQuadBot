@@ -1,6 +1,6 @@
 #mydir = "C:\\"
 #pwbdir = mydir + "pywikipedia\\"
-pwbdir = "/home/deltaquad/pywikipedia/pywikipedia"
+pwbdir = "/home/deltaquad/pywikipedia"
 import sys
 sys.path.append(pwbdir)
 from wikipedia import *
@@ -11,7 +11,7 @@ import traceback
 from time import strftime, gmtime, sleep
 
 site = wikipedia.getSite()
-page = 'User:DeltaQuadBot/Sandbox'
+page = 'Wikipedia:Arbitration Committee Elections December 2012/Log'
 thepage = wikipedia.Page(site, page)
 
 def timestamp():
