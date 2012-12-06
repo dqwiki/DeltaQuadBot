@@ -1,6 +1,6 @@
 #mydir = "C:\\"
 #pwbdir = mydir + "pywikipedia\\"
-pwbdir = "/home/deltaquad/pywikipedia"
+pwbdir = "/home/deltaquad/pywikipedia/pywikipedia"
 import sys
 sys.path.append(pwbdir)
 from wikipedia import *
