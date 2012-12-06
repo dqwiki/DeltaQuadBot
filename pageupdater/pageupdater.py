@@ -279,8 +279,8 @@ def reset_job_list(pagename):
 # initialisation
  
 # import wikipedia modules
-pwbdir = "C:\\pywikipedia\\"
-#pwbdir = "/home/deltaquad/pywikipedia/pywikipedia"
+#pwbdir = "C:\\pywikipedia\\"
+pwbdir = "/home/deltaquad/pywikipedia/pywikipedia"
 import sys
 sys.path.append(pwbdir)
 from wikipedia import *
