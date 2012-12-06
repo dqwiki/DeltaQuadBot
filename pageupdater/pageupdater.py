@@ -74,7 +74,7 @@ def perform_search(search_phrase,safe_page_list,safe_phrase_list):
             store_warning("not contained",safe_phrase)
  
     # returns a generator function with search results
-    search_results = site.search("\""+search_phrase+"\"",number=1e10,"0|10|100")
+    search_results = site.search("\""+search_phrase+"\"","0|10|100",number=1e10)
  
     checked_search_results = []
     num_returned = 0
@@ -280,7 +280,7 @@ def reset_job_list(pagename):
  
 # import wikipedia modules
 pwbdir = "C:\\pywikipedia\\"
-pwbdir = "/home/deltaquad/pywikipedia/pywikipedia"
+#pwbdir = "/home/deltaquad/pywikipedia/pywikipedia"
 import sys
 sys.path.append(pwbdir)
 from wikipedia import *
