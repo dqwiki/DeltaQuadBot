@@ -64,7 +64,7 @@ def searchlist(line, listtype):
         return [False, None, None]
     if listtype == "wl":
         for entry in wl:
-            if entry in line.lower():
+            if entry.lower() in line.lower():
                 return True
         return False
     if listtype == "sl":
