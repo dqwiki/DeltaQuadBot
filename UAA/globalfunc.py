@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime
 import sys
 import platform
@@ -49,16 +50,17 @@ def checkRegisterTime(user, maxDays):
                 return True
         return False
 def searchlist(line, listtype):
+    try:line=line.decode("utf-8")
+    except:noNeedToTryAndPlayWithEncoding = True #not a real var
+    if line == "":
+        print "Username is blank"
+        return
     if listtype == "bl":
         i=0
         while i < len(bl):
-            #print bl[i].split(":")[0] #Debug lines for when blacklist is having an issue parsing something. 
-            #print re.search(bl[i].split(":")[0], line.lower())
-            if bl[i].split(":")[0] != "":check = re.search(bl[i].split(":")[0], line.lower())
+            if bl[i].lower().split(":")[0] != "":check = re.search(bl[i].lower().split(":")[0], line.lower())
             else: check = None
-            if check == "None" or check == None:
-                holder = 1#useless line
-            else:
+            if not (check == "None" or check == None):
                 return [True, bl[i].split(":")[0], ' '.join(bl[i].split(":")[1:])]
             i = i+1
         return [False, None, None]
@@ -69,25 +71,33 @@ def searchlist(line, listtype):
         return False
     if listtype == "sl":
         i=0
-        while i < len(sl):
+        while i < len(sl):#can be omptimized with for statement
             if re.search(".", sl[i]) != None:
                 stringline = sl[i].split(":")[1]
                 stringline = stringline.split(" ")
                 for everyexpr in stringline:
                     if everyexpr in line:
-                        if re.search(".", everyexpr) != None:newline = line.replace(everyexpr, sl[i].split(":")[0])
-                        if re.search(".", everyexpr) != None:
-                            blslcheck = searchlist(newline, "bl")
+                        if re.search(".", everyexpr.lower()) != None:
+                            newline = line.lower().replace(everyexpr.lower(), sl[i].lower().split(":")[0])
+                            blslcheck = searchlist(newline.lower(), "bl")
                             if blslcheck[0] and re.search(".", everyexpr) != None:
-                                if searchlist(newline, "wl"):
+                                wlcheck = searchlist(newline, "wl")
+                                if not wlcheck:
                                     return [False, 'Used '+sl[i][0]+' attempting to skip filter: '+blslcheck[1],blslcheck[2]]
                                 else:return [True, None, None]
-                    else:check = None
-                if check == "None" or check == None:
-                    holder = 1#useless line
             i = i+1
+        matchnum = 0
+        for eachline in sl:
+                if eachline == "":continue
+                splitline = eachline.split(": ")[1]
+                splitline = splitline.split(" ")
+                for entry in splitline:                        
+                        if entry in line:
+                                if not re.search('[a-z]|[A-Z]|[0-9]',entry) == None:continue
+                                matchnum = matchnum +1
+        if matchnum > 1:return [False, 'Attempting to skip filters using multiple similiar charecters','LOW_CONFIDENCE,NOTE(Multiple characters like ν and ә can be contained in the same phrase, this rule detects when one or more occurs)']
         return True
-def checkUser(user,waittilledit):
+def checkUser(user,waittilledit,noEdit):
         bltest = searchlist(user, "bl")
         try:line = str(bltest[1])
         except:
@@ -98,17 +108,24 @@ def checkUser(user,waittilledit):
                 if searchlist(user, "wl"):
                         print "Clear - on wl"
                         return
-                else:
-                        return post(user,str(bltest[1]),str(bltest[2]),waittilledit)
+                elif noEdit:
+                        print'No edit - 1'
+                        return 
+                else: print user,str(bltest[1]),str(bltest[2]),str(waittilledit)
         slcheck = searchlist(user, "sl")
         if slcheck == True:a=1
-        elif 'WAIT_TILL_EDIT' in str(slcheck[2]):waittilledit = True
-        else:waittilledit = False
+        elif waittilledit != False and 'WAIT_TILL_EDIT' in str(slcheck[2]):waittilledit = True
         try:
                 if not slcheck[0] and not bltest[0]:
+                        if noEdit:
+                                print "No edit - 2"
+                                return
                         return post(user,str(slcheck[1]),str(slcheck[2]),waittilledit)
         except:
                 if not slcheck and not bltest[0]:
+                        if noEdit:
+                                print "No edit - 3"
+                                return
                         return post(user,str(slcheck[1]),str(slcheck[2]),waittilledit)
         return
 def main():
@@ -129,13 +146,13 @@ def main():
         for entry in reg:
                 user = entry["user"]
                 if user == "":continue
-                checkUser(user, True)
+                checkUser(user, True, False)
 def runDry():
         site = wikipedia.getSite()
         params = {'action': 'query',
         	'list': 'logevents',
         	'letype': 'newusers',
-        	'leend':globe.checkLastRun(),
+        	'leend':checkLastRun(),
         	'lelimit':'5000',
         	'leprop':'user',
         	'format':'json'        
@@ -143,14 +160,12 @@ def runDry():
         response, raw = site.postForm(site.apipath(), params)
         result = json.loads(raw)
         reg = result["query"]["logevents"]
-	#postCurrentRun()
         print 'Last run occured at ' + checkLastRun()
-        json = clearXML(json)
-        for user in json:
-                user = user.replace("&amp;#039;","'")
-                user = user.replace("&#039;","'")
-		#checkUser(user, True)
-                #print "User:"+user
+        for entry in reg:
+                user = entry["user"]
+                if user == "":continue
+                print "User: "+user
+                checkUser(user, True, True)
 def post(user, match, flags, restrict):
         summary = "[[User:"+localconfig.botname+"|"+localconfig.botname+"]] "+ localconfig.primarytaskname +" - [[User:"+user+"]] ([[Special:Block/"+user+"|Block]])"
         site = wikipedia.getSite()
@@ -189,7 +204,7 @@ def post(user, match, flags, restrict):
 def waitTillEdit(user):
         print user
         if checkRegisterTime(user, 7):
-                checkUser(user)
+                checkUser(user, False, True)
                 print 'Over 7 days '+user
                 return
         summary = "[[User:DeltaQuadBot|DeltaQuadBot]] Task UAA listing - Waiting for [[User:"+user+"]] ([[Special:Block/"+user+"|Block]]) to edit"
@@ -220,9 +235,7 @@ def cutup(array):
         try:
             while array[i][0] != ";":
                 i=i+1
-            #array[i] = array[i].replace(";","")
             array[i] = array[i].split(":")
-            #print array[i]
             i = i + 1
         except:
             return array
@@ -253,6 +266,8 @@ def startAllowed(override):
         start = page.get()
         if start == "Run":
                 return True
+        if start == "Dry run":
+                runDry()
         if start == "Dry":
                 print "Notice - Running Checkwait.py only"
                 import checkwait #import as it's a py file
@@ -279,7 +294,7 @@ def checkWait():
                         print "User is blocked already, removing from wait list."
                         continue
                 if getEditCount(waiter) == True:#If edited, send them to UAA
-                        checkUser(waiter,False)
+                        checkUser(waiter,False,False)
                         print "Sending to UAA from waitlist."
                         continue
                 if waiter in newlist:#If user already in the list, in case duplicates run over
