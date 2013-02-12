@@ -52,9 +52,7 @@ def checkRegisterTime(user, maxDays):
 def searchlist(line, listtype):
     try:line=line.decode("utf-8")
     except:noNeedToTryAndPlayWithEncoding = True #not a real var
-    if line == "":
-        print "Username is blank"
-        return
+    if line == "":return
     if listtype == "bl":
         i=0
         while i < len(bl):
@@ -101,32 +99,32 @@ def checkUser(user,waittilledit,noEdit):
         bltest = searchlist(user, "bl")
         try:line = str(bltest[1])
         except:
-                print 'Error'
+                trace = traceback.format_exc() # Traceback.
+		print trace # Print.
                 return
         flags = str(bltest[2])
         if bltest[0]:
                 if searchlist(user, "wl"):
-                        print "Clear - on wl"
                         return
                 elif noEdit:
-                        print'No edit - 1'
+                        print'No edit - 1' + str(bltest[1]) +" "+ str(bltest[2])
                         return 
-                else: print user,str(bltest[1]),str(bltest[2]),str(waittilledit)
+                else: post(user,str(bltest[1]),str(bltest[2]),str(waittilledit))
         slcheck = searchlist(user, "sl")
         if slcheck == True:a=1
         elif waittilledit != False and 'WAIT_TILL_EDIT' in str(slcheck[2]):waittilledit = True
         try:
                 if not slcheck[0] and not bltest[0]:
                         if noEdit:
-                                print "No edit - 2"
+                                print "No edit - 2 "+str(slcheck[1]) +" "+ str(slcheck[2])
                                 return
-                        return post(user,str(slcheck[1]),str(slcheck[2]),waittilledit)
+                        return post(user,str(slcheck[1]),str(slcheck[2]),str(waittilledit))
         except:
                 if not slcheck and not bltest[0]:
                         if noEdit:
-                                print "No edit - 3"
+                                print "No edit - 3"+str(slcheck[1]) +" "+ str(slcheck[2])
                                 return
-                        return post(user,str(slcheck[1]),str(slcheck[2]),waittilledit)
+                        return post(user,str(slcheck[1]),str(slcheck[2]),str(waittilledit))
         return
 def main():
         site = wikipedia.getSite()
@@ -142,9 +140,12 @@ def main():
         result = json.loads(raw)
         reg = result["query"]["logevents"]
         postCurrentRun()
-        print 'Last run occured at ' + checkLastRun()
         for entry in reg:
-                user = entry["user"]
+                try:user = entry["user"]
+                except KeyError:
+                        #Placeholder for OS'd users
+                        oversighted=True
+                        continue
                 if user == "":continue
                 checkUser(user, True, False)
 def runDry():
@@ -160,11 +161,9 @@ def runDry():
         response, raw = site.postForm(site.apipath(), params)
         result = json.loads(raw)
         reg = result["query"]["logevents"]
-        print 'Last run occured at ' + checkLastRun()
         for entry in reg:
                 user = entry["user"]
                 if user == "":continue
-                print "User: "+user
                 checkUser(user, True, True)
 def post(user, match, flags, restrict):
         summary = "[[User:"+localconfig.botname+"|"+localconfig.botname+"]] "+ localconfig.primarytaskname +" - [[User:"+user+"]] ([[Special:Block/"+user+"|Block]])"
@@ -173,10 +172,7 @@ def post(user, match, flags, restrict):
         page = wikipedia.Page(site, pagename)
         pagetxt = page.get()
         if user in pagetxt:
-                print 'Blocked posting of '+user
                 return
-        else:
-                print 'Did not block the posting of '+user
         text = "\n\n*{{user-uaa|1="+user+"}}\n"
         if "LOW_CONFIDENCE" in flags:
                 text = text + "*:{{clerknote}} There is low confidence in this filter test, please be careful in blocking. ~~~~\n"
@@ -200,12 +196,9 @@ def post(user, match, flags, restrict):
                 text = text + "*:{{clerknote}} Consider reporting to [[WP:SPI]] as [[User:%s]]. ~~~~\n" % sock
         if restrict == False:text + "*:{{done|Waited until user edited to post.}} ~~~~\n"
         if not checkBlocked(user):page.put(pagetxt + text, comment=summary)
-        else:print user+ " is blocked. Skip reporting."
 def waitTillEdit(user):
-        print user
         if checkRegisterTime(user, 7):
                 checkUser(user, False, True)
-                print 'Over 7 days '+user
                 return
         summary = "[[User:DeltaQuadBot|DeltaQuadBot]] Task UAA listing - Waiting for [[User:"+user+"]] ([[Special:Block/"+user+"|Block]]) to edit"
         site = wikipedia.getSite()
@@ -228,7 +221,6 @@ def postCurrentRun():
         pagename = localconfig.timepage
         page = wikipedia.Page(site, pagename)
         page.put(str(currentTime()), comment=summary)
-        print 'Time of check: ' + str(currentTime())
 def cutup(array):
     i=1
     while i < len(array)-1:
@@ -275,7 +267,6 @@ def startAllowed(override):
         else:
                 return False
 def checkWait():
-        print 'Checkwait running'
         newlist=""#blank variable for later
         site = wikipedia.getSite()
         pagename = localconfig.waitlist
@@ -285,21 +276,13 @@ def checkWait():
         waiters = waiters.replace("*{{User|","")
         waiters = waiters.split("\n")
         for waiter in waiters:
-                if waiter == "":#Non-existant user
-                        continue
-                if checkRegisterTime(waiter, 7):
-                        print "User is older than 7 days, removing from waitlist."
-                        continue
-                if checkBlocked(waiter):#If user is blocked, skip putting them back on the list.
-                        print "User is blocked already, removing from wait list."
-                        continue
+                if waiter == "":continue#Non-existant user
+                if checkRegisterTime(waiter, 7):continue
+                if checkBlocked(waiter):continue#If user is blocked, skip putting them back on the list.
                 if getEditCount(waiter) == True:#If edited, send them to UAA
                         checkUser(waiter,False,False)
-                        print "Sending to UAA from waitlist."
                         continue
-                if waiter in newlist:#If user already in the list, in case duplicates run over
-                        print "User is already in the waitlist."
-                        continue
+                if waiter in newlist:continue#If user already in the list, in case duplicates run over
                 #Continue if none of the other checks have issues with the conditions for staying on the waitlist
                 newlist = newlist + "\n*{{User|" + waiter + "}}"
                 #print "\n*{{User|" + waiter + "}}"
@@ -316,3 +299,4 @@ global wl
 wl = getlist("wl")
 global sl
 sl = getlist("sl")
+checkUser("Bennentthebastard",False,False)
