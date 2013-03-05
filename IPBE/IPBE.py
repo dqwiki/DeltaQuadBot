@@ -1,6 +1,4 @@
 #! /usr/bin/python
-#$ -j y
-#$ -o $HOME/IPBE.out
 import globalfunc as globe
 import sys
 import platform

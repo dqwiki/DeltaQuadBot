@@ -1,7 +1,4 @@
 #! /usr/bin/python
-#$ -l h_rt=1:00:00
-#$ -j y
-#$ -o $HOME/UAA.out
 import sys, localconfig, platform
 #OS Runtime comments
 if platform.system() == "Windows":
