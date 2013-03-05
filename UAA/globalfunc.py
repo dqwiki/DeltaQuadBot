@@ -81,7 +81,7 @@ def searchlist(line, listtype):
                             if blslcheck[0] and re.search(".", everyexpr) != None:
                                 wlcheck = searchlist(newline, "wl")
                                 if not wlcheck:
-                                    return [False, 'Used '+sl[i][0]+' attempting to skip filter: '+blslcheck[1],blslcheck[2]]
+                                    return [False, 'Used '+everyexpr.lower()+ ' instead of '+sl[i][0]+' attempting to skip filter: '+blslcheck[1],blslcheck[2]]
                                 else:return [True, None, None]
             i = i+1
         matchnum = 0
@@ -110,6 +110,7 @@ def checkUser(user,waittilledit,noEdit):
                         print'No edit - 1' + str(bltest[1]) +" "+ str(bltest[2])
                         return 
                 else: post(user,str(bltest[1]),str(bltest[2]),str(waittilledit))
+        if "NO_SIM_MATCH" in flags:return
         slcheck = searchlist(user, "sl")
         if slcheck == True:a=1
         elif waittilledit != False and 'WAIT_TILL_EDIT' in str(slcheck[2]):waittilledit = True
