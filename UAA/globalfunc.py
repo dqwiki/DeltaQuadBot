@@ -41,14 +41,15 @@ def checkRegisterTime(user, maxDays):
         params = {"action": "query", "list": "users", "ususers": user, "format": "json", "usprop": "registration"}
         response, raw = site.postForm(site.apipath(), params)
         result = json.loads(raw)
-        reg = result["query"]["users"][0]["registration"]
+        try:reg = result["query"]["users"][0]["registration"]
+        except:return [False,False]
         then = time.strptime(reg, "%Y-%m-%dT%H:%M:%SZ")
         now = time.gmtime()
         thenSeconds = time.mktime(then)
         nowSeconds = time.mktime(now)
         if thenSeconds < nowSeconds - maxSeconds:
-                return True
-        return False
+                return [True, True]
+        return [False, True]
 def searchlist(line, listtype):
     try:line=line.decode("utf-8")
     except:noNeedToTryAndPlayWithEncoding = True #not a real var
@@ -100,7 +101,7 @@ def checkUser(user,waittilledit,noEdit):
         try:line = str(bltest[1])
         except:
                 trace = traceback.format_exc() # Traceback.
-		print trace # Print.
+                print trace # Print.
                 return
         flags = str(bltest[2])
         if bltest[0]:
@@ -198,9 +199,13 @@ def post(user, match, flags, restrict):
         if restrict == False:text + "*:{{done|Waited until user edited to post.}} ~~~~\n"
         if not checkBlocked(user):page.put(pagetxt + text, comment=summary)
 def waitTillEdit(user):
-        if checkRegisterTime(user, 7):
+        registertime=checkRegisterTime(user, 7)
+        if !registertime[1]:
+                return
+        if registertime[0]:
                 checkUser(user, False, True)
                 return
+        if registration[1]
         summary = "[[User:DeltaQuadBot|DeltaQuadBot]] Task UAA listing - Waiting for [[User:"+user+"]] ([[Special:Block/"+user+"|Block]]) to edit"
         site = wikipedia.getSite()
         pagename = localconfig.waitlist
@@ -300,4 +305,3 @@ global wl
 wl = getlist("wl")
 global sl
 sl = getlist("sl")
-checkUser("Bennentthebastard",False,False)
