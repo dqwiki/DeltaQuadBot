@@ -200,7 +200,7 @@ def post(user, match, flags, restrict):
         if not checkBlocked(user):page.put(pagetxt + text, comment=summary)
 def waitTillEdit(user):
         registertime=checkRegisterTime(user, 7)
-        if !registertime[1]:
+        if !(registertime[1]):
                 return
         if registertime[0]:
                 checkUser(user, False, True)
