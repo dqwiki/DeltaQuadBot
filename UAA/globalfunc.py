@@ -5,6 +5,7 @@ import platform
 import time
 import json
 import re
+import traceback
 
 import localconfig
 if platform.system() == "Windows":
