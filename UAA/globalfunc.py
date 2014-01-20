@@ -205,7 +205,6 @@ def waitTillEdit(user):
         if registertime[0]:
                 checkUser(user, False, True)
                 return
-        if registration[1]
         summary = "[[User:DeltaQuadBot|DeltaQuadBot]] Task UAA listing - Waiting for [[User:"+user+"]] ([[Special:Block/"+user+"|Block]]) to edit"
         site = wikipedia.getSite()
         pagename = localconfig.waitlist
