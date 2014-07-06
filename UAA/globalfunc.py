@@ -101,6 +101,7 @@ def checkUser(user,waittilledit,noEdit):
         bltest = searchlist(user, "bl")
         try:line = str(bltest[1])
         except:
+                post(user,"This bot does not support the encoding in this username or filter. Please consider reporting this to my master. Tripped on: " + bltest[1],"LOW_CONFIDENCE",False)
                 trace = traceback.format_exc() # Traceback.
                 print trace # Print.
                 return
@@ -297,7 +298,7 @@ def checkWait():
         pagename = localconfig.waitlist
         page = wikipedia.Page(site, pagename)
         pagetxt = page.get()
-        newlist.replace("\n*{{User|}}","")
+        newlist = newlist.replace("\n*{{User|}}","")
         page.put(newlist, comment=summary)
 global bl
 bl = getlist("bl")
