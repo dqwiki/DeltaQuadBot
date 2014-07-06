@@ -35,9 +35,10 @@ def checkBlocked(user):
                 username = userlib.User("en", user)
                 return username.isBlocked()
         except:return None
-def checkRegisterTime(user, maxDays):
+def checkRegisterTime(user, maxDays,advanced):
         """Returns True if the given user is more than maxDays old, else False."""
         maxSeconds = maxDays * 24 * 60 * 60
+        print "MAX: "+str(maxSeconds)
         site = wikipedia.getSite()
         params = {"action": "query", "list": "users", "ususers": user, "format": "json", "usprop": "registration"}
         response, raw = site.postForm(site.apipath(), params)
@@ -48,9 +49,18 @@ def checkRegisterTime(user, maxDays):
         now = time.gmtime()
         thenSeconds = time.mktime(then)
         nowSeconds = time.mktime(now)
-        if thenSeconds < nowSeconds - maxSeconds:
-                return [True, True]
-        return [False, True]
+        print "thenSeconds < nowSeconds - maxSeconds"
+        print str(thenSeconds) +"<"+ str(nowSeconds-maxSeconds)
+        print thenSeconds < nowSeconds - maxSeconds
+        if advanced:
+                if thenSeconds < nowSeconds - maxSeconds:
+                        return [True, True]
+                return [False, True]
+        else:
+                if thenSeconds < nowSeconds - maxSeconds:
+                        return True
+                return False
+
 def searchlist(line, listtype):
     try:line=line.decode("utf-8")
     except:noNeedToTryAndPlayWithEncoding = True #not a real var
@@ -201,7 +211,7 @@ def post(user, match, flags, restrict):
         if restrict == False:text + "*:{{done|Waited until user edited to post.}} ~~~~\n"
         if not checkBlocked(user):page.put(pagetxt + text, comment=summary)
 def waitTillEdit(user):
-        registertime=checkRegisterTime(user, 7)
+        registertime=checkRegisterTime(user, 7,True)
         if not registertime[1]:
                 return
         if registertime[0]:
@@ -283,15 +293,26 @@ def checkWait():
         waiters = waiters.replace("*{{User|","")
         waiters = waiters.split("\n")
         for waiter in waiters:
-                if waiter == "":continue#Non-existant user
-                if checkRegisterTime(waiter, 7):continue
-                if checkBlocked(waiter):continue#If user is blocked, skip putting them back on the list.
+                print waiter
+                if waiter == "":
+                        print "NExist"
+                        continue#Non-existant user
+                if checkRegisterTime(waiter, 7,False):
+                        print "Over7"
+                        continue
+                if checkBlocked(waiter):
+                        print "Blocked"
+                        continue#If user is blocked, skip putting them back on the list.
                 if getEditCount(waiter) == True:#If edited, send them to UAA
                         checkUser(waiter,False,False)
+                        print "Sent to UAA"
                         continue
-                if waiter in newlist:continue#If user already in the list, in case duplicates run over
+                if waiter in newlist:
+                        print "Already there"
+                        continue#If user already in the list, in case duplicates run over
                 #Continue if none of the other checks have issues with the conditions for staying on the waitlist
                 newlist = newlist + "\n*{{User|" + waiter + "}}"
+                print "Added"
                 #print "\n*{{User|" + waiter + "}}"
         summary = localconfig.editsumwait
         site = wikipedia.getSite()

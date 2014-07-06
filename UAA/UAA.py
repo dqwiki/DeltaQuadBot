@@ -14,6 +14,6 @@ if not globe.startAllowed(override):
         print "Fatal - System Access Denied."
         sys.exit(1)
         print "System Alert - Program Still running."
-#globe.main()
+globe.main()
 globe.checkWait()
 wikipedia.stopme()
