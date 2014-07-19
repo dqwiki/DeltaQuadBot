@@ -38,7 +38,6 @@ def checkBlocked(user):
 def checkRegisterTime(user, maxDays,advanced):
         """Returns True if the given user is more than maxDays old, else False."""
         maxSeconds = maxDays * 24 * 60 * 60
-        print "MAX: "+str(maxSeconds)
         site = wikipedia.getSite()
         params = {"action": "query", "list": "users", "ususers": user, "format": "json", "usprop": "registration"}
         response, raw = site.postForm(site.apipath(), params)
@@ -49,9 +48,6 @@ def checkRegisterTime(user, maxDays,advanced):
         now = time.gmtime()
         thenSeconds = time.mktime(then)
         nowSeconds = time.mktime(now)
-        print "thenSeconds < nowSeconds - maxSeconds"
-        print str(thenSeconds) +"<"+ str(nowSeconds-maxSeconds)
-        print thenSeconds < nowSeconds - maxSeconds
         if advanced:
                 if thenSeconds < nowSeconds - maxSeconds:
                         return [True, True]
@@ -310,6 +306,33 @@ def checkWait():
         pagetxt = page.get()
         newlist = newlist.replace("\n*{{User|}}","")
         page.put(newlist, comment=summary)
+def pageCleanup():
+        newlist=""#blank variable for later
+        rawnewlist=""
+        site = wikipedia.getSite()
+        pagename = localconfig.postpage
+        page = wikipedia.Page(site, pagename)
+        uaapage = page.get()
+        #print uaapage
+        uaapage = uaapage.replace("==[[Wikipedia:UAA/BOT|Bot-reported]]==\n","")
+        usergrid = uaapage.split("*{{user-uaa|1=")
+        for cell in usergrid:
+                if cell == "":continue
+                user = cell.split("}}")[0]
+                if checkBlocked(user):continue#If user is blocked, skip putting them back on the list.
+                if checkRegisterTime(user, 14,False):continue#Requests over 14 days are removed for inaction
+                if user in newlist:continue
+                rawnewlist = rawnewlist + "\n" + user
+                newlist = newlist + "\n*{{user-uaa|1=" + ''.join(cell)
+                #print user
+        summary = localconfig.editsumclear
+        site = wikipedia.getSite()
+        pagename = localconfig.postpage
+        page = wikipedia.Page(site, pagename)
+        pagetxt = page.get()
+        newlist = "==[[Wikipedia:UAA/BOT|Bot-reported]]==\n" + newlist
+        page.put(newlist, comment=summary)
+        return
 global bl
 bl = getlist("bl")
 global wl
