@@ -307,36 +307,46 @@ def checkWait():
         newlist = newlist.replace("\n*{{User|}}","")
         page.put(newlist, comment=summary)
 def pageCleanup():
-        resolvedDatabase = ["{{UAA|w}}",
-                            "{{UAA|wait}}",
-                            "{{UAA|m}}",
-                            "{{UAA|mon}}",
-                            "{{UAA|d}}",
-                            "{{UAA|disc}}",
-                            "{{UAA|dc}}",
-                            "{{UAA|dcon}}",
-                            "{{UAA|rc}}",
-                            "{{UAA|rcu}}"
+        resolvedDatabase = ["{{UAA\|w}}",
+                            "{{UAA\|wt}}",
+                            "{{UAA\|wait}}",
+                            "{{UAA\|m}}",
+                            "{{UAA\|moniter}}",
+                            "{{UAA\|mon}}",
+                            "{{UAA\|d}}",
+                            "{{UAA\|disc}}",
+                            "{{UAA\|discussing}}",
+                            "{{UAA\|dc}}",
+                            "{{UAA\|dcon}}",
+                            "{{UAA\|change}}",
+                            "{{UAA\|request}}",
+                            "{{UAA\|rc}}",
+                            "{{UAA\|rcu}}"
                             ]
-        declinedDatabase = ["{{UAA|a}}",
-                            "{{UAA|afc",
-                            "{{UAA|s}}",
-                            "{{UAA|stale}}",
-                            "{{UAA|rn}}",
-                            "{{UAA|real}}",
-                            "{{UAA|no}}",
-                            "{{UAA|not}}",
-                            "{{UAA|e}}",
-                            "{{UAA|eye}}",
-                            "{{UAA|ci}}",
-                            "{{UAA|coi}}",
-                            "{{UAA|r}}",
-                            "{{UAA|rfcn}}"
+        declinedDatabase = ["{{UAA\|a}}",
+                            "{{UAA\|afc}}",
+                            "{{UAA\|s}}",
+                            "{{UAA\|st}}",
+                            "{{UAA\|stale}}",
+                            "{{UAA\|rn}}",
+                            "{{UAA\|real}}",
+                            "{{UAA\|name}}",
+                            "{{UAA\|b}}",
+                            "{{UAA\|bl}}",
+                            "{{UAA\|blatant}}",
+                            "{{UAA\|no}}",
+                            "{{UAA\|not}}",
+                            "{{UAA\|e}}",
+                            "{{UAA\|eye}}",
+                            "{{UAA\|ci}}",
+                            "{{UAA\|coi}}",
+                            "{{UAA\|coin}}",
+                            "{{UAA\|r}}",
+                            "{{UAA\|rfcn}}"
                             ]
         newlist=""#blank variable for later
         rawnewlist=""
         movelist=""
-        declined = False
         site = wikipedia.getSite()
         pagename = localconfig.postpage
         page = wikipedia.Page(site, pagename)
@@ -345,6 +355,7 @@ def pageCleanup():
         uaapage = uaapage.replace("==[[Wikipedia:UAA/BOT|Bot-reported]]==\n","")
         usergrid = uaapage.split("*{{user-uaa|1=")
         for cell in usergrid:
+                declined = False
                 if cell == "":continue
                 user = cell.split("}}")[0]
                 if checkBlocked(user):continue#If user is blocked, skip putting them back on the list.
@@ -358,13 +369,14 @@ def pageCleanup():
                                 declined = True
                                 break
                 if declined:continue
-                for entry in resolvedDatabase:
+                for entry in declinedDatabase:
                         if re.search(entry.lower(), cell.lower()) == None:
                                 continue
                         else:
                                 declined = True
                                 break
                 if declined:continue
+                print "!!!Keep: " + cell.split("}}")[0]
                 rawnewlist = rawnewlist + "\n" + user
                 newlist = newlist + "*{{user-uaa|1=" + ''.join(cell)
                 #print user
@@ -375,6 +387,7 @@ def pageCleanup():
         page = wikipedia.Page(site, pagename)
         pagetxt = page.get()
         newlist = "==[[Wikipedia:UAA/BOT|Bot-reported]]==\n" + newlist
+        print newlist + "\n--------------------------------------------------------------------------------------------------\n"
         page.put(newlist, comment=summary)
         ## UAA Holding pen posting ##
         site = wikipedia.getSite()
@@ -386,6 +399,7 @@ def pageCleanup():
         if time.strftime("%d") not in holdpage.split(time.strftime("%B"))[1]:
                 holdpage = holdpage + "\n===" + time.strftime("%d") + "===\n"
         holdpage = holdpage + "\n" + movelist
+        print holdpage
         page.put(holdpage, comment=summary)
         return
 global bl
