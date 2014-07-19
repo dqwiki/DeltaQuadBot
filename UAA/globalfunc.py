@@ -376,7 +376,6 @@ def pageCleanup():
                                 declined = True
                                 break
                 if declined:continue
-                print "!!!Keep: " + cell.split("}}")[0]
                 rawnewlist = rawnewlist + "\n" + user
                 newlist = newlist + "*{{user-uaa|1=" + ''.join(cell)
                 #print user
@@ -387,7 +386,6 @@ def pageCleanup():
         page = wikipedia.Page(site, pagename)
         pagetxt = page.get()
         newlist = "==[[Wikipedia:UAA/BOT|Bot-reported]]==\n" + newlist
-        print newlist + "\n--------------------------------------------------------------------------------------------------\n"
         page.put(newlist, comment=summary)
         ## UAA Holding pen posting ##
         site = wikipedia.getSite()
@@ -399,7 +397,6 @@ def pageCleanup():
         if time.strftime("%d") not in holdpage.split(time.strftime("%B"))[1]:
                 holdpage = holdpage + "\n===" + time.strftime("%d") + "===\n"
         holdpage = holdpage + "\n" + movelist
-        print holdpage
         page.put(holdpage, comment=summary)
         return
 global bl
