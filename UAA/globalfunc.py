@@ -385,7 +385,7 @@ def pageCleanup():
                 holdpage = holdpage + "\n==" + time.strftime("%B") + "=="
         if time.strftime("%d") not in holdpage.split(time.strftime("%B"))[1]:
                 holdpage = holdpage + "\n===" + time.strftime("%d") + "===\n"
-        holdpage = holdpage + movelist
+        holdpage = holdpage + "\n" + movelist
         page.put(holdpage, comment=summary)
         return
 global bl
