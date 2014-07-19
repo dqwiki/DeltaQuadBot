@@ -323,7 +323,7 @@ def pageCleanup():
                 if checkRegisterTime(user, 14,False):continue#Requests over 14 days are removed for inaction
                 if user in newlist:continue
                 rawnewlist = rawnewlist + "\n" + user
-                newlist = newlist + "\n*{{user-uaa|1=" + ''.join(cell)
+                newlist = newlist + "*{{user-uaa|1=" + ''.join(cell)
                 #print user
         summary = localconfig.editsumclear
         site = wikipedia.getSite()
