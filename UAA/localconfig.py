@@ -14,6 +14,7 @@ blacklist = 'User:DeltaQuad/UAA/Blacklist'
 whitelist = 'User:DeltaQuad/UAA/Whitelist'
 simlist =  'User:DeltaQuad/UAA/Similar'
 postpage = "Wikipedia:Usernames for administrator attention/Bot"
+holdpage = "Wikipedia:Usernames for administrator attention/Holding pen"
 
 #Runtime edit summarties
 primarytaskname = "Task UAA listing"

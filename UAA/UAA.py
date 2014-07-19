@@ -1,5 +1,5 @@
 #! /usr/bin/python
-import sys, localconfig, platform
+import sys, localconfig, platform, time
 #OS Runtime comments
 if platform.system() == "Windows":
         sys.path.append(localconfig.winpath)
@@ -9,7 +9,7 @@ else:
         print "You are running DeltaQuadBot UAA Module for Linux."
 import wikipedia
 import globalfunc as globe
-override = False	
+override = True	
 if not globe.startAllowed(override):
         print "Fatal - System Access Denied."
         sys.exit(1)

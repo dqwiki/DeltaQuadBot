@@ -307,8 +307,36 @@ def checkWait():
         newlist = newlist.replace("\n*{{User|}}","")
         page.put(newlist, comment=summary)
 def pageCleanup():
+        resolvedDatabase = ["{{UAA|w}}",
+                            "{{UAA|wait}}",
+                            "{{UAA|m}}",
+                            "{{UAA|mon}}",
+                            "{{UAA|d}}",
+                            "{{UAA|disc}}",
+                            "{{UAA|dc}}",
+                            "{{UAA|dcon}}",
+                            "{{UAA|rc}}",
+                            "{{UAA|rcu}}"
+                            ]
+        declinedDatabase = ["{{UAA|a}}",
+                            "{{UAA|afc",
+                            "{{UAA|s}}",
+                            "{{UAA|stale}}",
+                            "{{UAA|rn}}",
+                            "{{UAA|real}}",
+                            "{{UAA|no}}",
+                            "{{UAA|not}}",
+                            "{{UAA|e}}",
+                            "{{UAA|eye}}",
+                            "{{UAA|ci}}",
+                            "{{UAA|coi}}",
+                            "{{UAA|r}}",
+                            "{{UAA|rfcn}}"
+                            ]
         newlist=""#blank variable for later
         rawnewlist=""
+        movelist=""
+        declined = False
         site = wikipedia.getSite()
         pagename = localconfig.postpage
         page = wikipedia.Page(site, pagename)
@@ -322,9 +350,25 @@ def pageCleanup():
                 if checkBlocked(user):continue#If user is blocked, skip putting them back on the list.
                 if checkRegisterTime(user, 14,False):continue#Requests over 14 days are removed for inaction
                 if user in newlist:continue
+                for entry in resolvedDatabase:
+                        if re.search(entry.lower(), cell.lower()) == None:
+                                continue
+                        else:
+                                movelist = movelist + "*{{user-uaa|1=" + ''.join(cell)
+                                declined = True
+                                break
+                if declined:continue
+                for entry in resolvedDatabase:
+                        if re.search(entry.lower(), cell.lower()) == None:
+                                continue
+                        else:
+                                declined = True
+                                break
+                if declined:continue
                 rawnewlist = rawnewlist + "\n" + user
                 newlist = newlist + "*{{user-uaa|1=" + ''.join(cell)
                 #print user
+        ## UAA Bot page posting ##
         summary = localconfig.editsumclear
         site = wikipedia.getSite()
         pagename = localconfig.postpage
@@ -332,6 +376,17 @@ def pageCleanup():
         pagetxt = page.get()
         newlist = "==[[Wikipedia:UAA/BOT|Bot-reported]]==\n" + newlist
         page.put(newlist, comment=summary)
+        ## UAA Holding pen posting ##
+        site = wikipedia.getSite()
+        pagename = localconfig.holdpage
+        page = wikipedia.Page(site, pagename)
+        holdpage = page.get()
+        if time.strftime("%B") not in holdpage:
+                holdpage = holdpage + "\n==" + time.strftime("%B") + "=="
+        if time.strftime("%d") not in holdpage.split(time.strftime("%B"))[1]:
+                holdpage = holdpage + "\n===" + time.strftime("%d") + "===\n"
+        holdpage = holdpage + movelist
+        page.put(holdpage, comment=summary)
         return
 global bl
 bl = getlist("bl")
