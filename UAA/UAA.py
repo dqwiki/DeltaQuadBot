@@ -9,12 +9,12 @@ else:
         print "You are running DeltaQuadBot UAA Module for Linux."
 import wikipedia
 import globalfunc as globe
-override = True	
+override = False
 if not globe.startAllowed(override):
         print "Fatal - System Access Denied."
         sys.exit(1)
         print "System Alert - Program Still running."
-#globe.main()
-#globe.checkWait()
+globe.main()
+globe.checkWait()
 globe.pageCleanup()
 wikipedia.stopme()
