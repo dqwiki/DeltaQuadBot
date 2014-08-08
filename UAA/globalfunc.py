@@ -386,7 +386,7 @@ def pageCleanup():
         page = wikipedia.Page(site, pagename)
         pagetxt = page.get()
         newlist = "==[[Wikipedia:UAA/BOT|Bot-reported]]==\n" + newlist
-        #page.put(newlist, comment=summary)
+        page.put(newlist, comment=summary)
         ## UAA Holding pen posting ##
         site = wikipedia.getSite()
         pagename = localconfig.holdpage
@@ -395,10 +395,10 @@ def pageCleanup():
         if movelist == "":return
         if time.strftime("%B") not in holdpage:
                 holdpage = holdpage + "\n==" + time.strftime("%B") + "=="
-        if time.strftime("%d") not in holdpage.split(time.strftime("%B"))[1]:
+        if time.strftime("%d") not in holdpage.split(time.strftime("%B"))[1]: #or time.strftime("%d").split("0")[1] not in holdpage.split(time.strftime("%B"))[1]:
                 holdpage = holdpage + "\n===" + time.strftime("%d") + "===\n"
         holdpage = holdpage + "\n" + movelist
-        #page.put(holdpage, comment=summary)
+        page.put(holdpage, comment=summary)
         return
 global bl
 bl = getlist("bl")
