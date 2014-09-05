@@ -40,12 +40,19 @@ def formatArray(database):
     return cases
 
 def getAllCases(ctype):
+    if ctype=="inprogress":return getCurrentCases('SPI cases currently being checked')
     if ctype=="endorse":return getCurrentCases('SPI cases awaiting a CheckUser‎')
-    if ctype=="open":return getCurrentCases('SPI cases awaiting administration‎')
-    if ctype=="ADMIN":return getCurrentCases('SPI requests needing an Administrator‎')
-    if ctype=="hold":return getCurrentCases('SPI cases currently in progress‎')
-    if ctype=="curequest":return getCurrentCases('SPI requests for pre-CheckUser review‎')
-    if ctype=="close":return getCurrentCases('SPI cases pending close‎')
+    if ctype=="relist":return getCurrentCases('SPI cases relisted for a checkuser')
+    if ctype=="curequest":return getCurrentCases('SPI cases requesting a checkuser‎')
+    if ctype=="checked":return getCurrentCases('SPI cases CU complete')
+    if ctype=="ADMIN":return getCurrentCases('SPI cases needing an administrator‎')
+    if ctype=="decline":return getCurrentCases('SPI cases declined for checkuser by clerk‎')
+    if ctype=="cudecline":return getCurrentCases('SPI cases declined for checkuser by clerk‎')
+    if ctype=="open":return getCurrentCases('SPI cases awaiting review‎')
+    if ctype=="moreinfo":return getCurrentCases('SPI cases requesting more information‎')
+    if ctype=="hold":return getCurrentCases('SPI cases on hold by clerk‎')
+    if ctype=="cuhold":return getCurrentCases('SPI cases on hold by checkuser‎')
+    if ctype=="close":return getCurrentCases('SPI cases awaiting archive‎')
 
 def getHistory(title):
     site= wikipedia.getSite()
@@ -99,7 +106,7 @@ def caseProcessor():
 !Investigation!!Status!!Last user to edit case!!Date filed!!timestamp!!Last clerk/checkuser to edit case!!timestamp
 |-
 """
-    caseTypes=["endorse","curequest","ADMIN","open","hold","close"]
+    caseTypes=["inprogress","endorse","relist","curequest","checked","ADMIN","decline","cudecline","open","moreinfo","hold","cuhold","close"]
     for entry in caseTypes:
         caselist=getAllCases(entry)
         if caselist == None:
