@@ -118,7 +118,7 @@ def caseProcessor():
             table+=formatTableRow(case.split("/")[1],entry,filer,dateFiled,lastEdit,timestamp,lastClerk)+"\n"
     table+="|}"
     site = wikipedia.getSite()
-    pagename = "User:DeltaQuad/Clerks list"
+    pagename = "User:DeltaQuad/SPI case list"
     page = wikipedia.Page(site, pagename)
     print table
     page.put(table, comment="Updating SPI caselist")
