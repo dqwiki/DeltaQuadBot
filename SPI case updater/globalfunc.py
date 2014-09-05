@@ -96,7 +96,7 @@ def formatTableRow(case, status,filer,dateFiled,lastEdit,timestamp,lastClerk):
 def caseProcessor():
     table="""
 {|class="wikitable sortable" width="100%"
-!Investigation!!Status!!Date filed!!Last user to edit case!!timestamp!!Last clerk/checkuser to edit case!!timestamp
+!Investigation!!Status!!Last user to edit case!!Date filed!!timestamp!!Last clerk/checkuser to edit case!!timestamp
 |-
 """
     caseTypes=["endorse","curequest","ADMIN","open","hold","close"]
