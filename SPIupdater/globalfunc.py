@@ -72,7 +72,7 @@ def getHistory(title):
 def getFiler(revisions):
     i=0
     for revision in revisions:
-        if "archive" in revision["comment"].lower():
+        if "archive" in revision["comment"].lower() or "archiving" in revision["comment"].lower():
             return revisions[i-1]["user"],revisions[i-1]["timestamp"]
         else:
             last = revisions.pop()
