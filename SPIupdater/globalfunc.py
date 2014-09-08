@@ -83,8 +83,9 @@ def getLastEdit(title):
     return [last["user"],last["timestamp"]]
 def getLastClerk(title):
     revisions = getHistory(title)
+    i=0
     while True:
-        try:last = revisions[0]
+        try:last = revisions[i]
         except:return "None"
         #except:return ""
         site = wikipedia.getSite()
@@ -93,7 +94,9 @@ def getLastClerk(title):
         clerks = page.get()
         if last["user"] in clerks:
             return last["user"]
-        revisions = revisions.remove(last)
+        if "archive" in last["comment"].lower() or "archiving" in last["comment"].lower():
+            return "None"
+        i+=1
     return "None"
     
 
