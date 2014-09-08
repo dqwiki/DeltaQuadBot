@@ -117,6 +117,7 @@ def caseProcessor():
             filer=getFiler(history)
             lastEdit=getLastEdit(case)
             lastClerk=getLastClerk(case)
+            if lastClerk=="None":lastClerk=""
 
             dateFiled=filer[1]
             filer = filer[0]
