@@ -127,5 +127,5 @@ def caseProcessor():
     site = wikipedia.getSite()
     pagename = "User:DeltaQuad/SPI case list"
     page = wikipedia.Page(site, pagename)
-    #page.put(table, comment="Updating SPI caselist")
+    page.put(table, comment="Updating SPI caselist")
 caseProcessor()
