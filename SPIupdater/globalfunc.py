@@ -70,14 +70,14 @@ def getHistory(title):
     history = history["query"]["pages"][pageid]['revisions']
     return history
 def getFiler(revisions):
-    i=0
-    for revision in revisions:
-        if "archive" in revision["comment"].lower() or "archiving" in revision["comment"].lower():
-            return revisions[i-1]["user"],revisions[i-1]["timestamp"]
-        else:
-            last = revisions.pop()
-            return [last["user"],last["timestamp"]]
-        i+=1
+        i=0
+        for revision in revisions:
+                if "archive" in revision["comment"].lower() or "archiving" in revision["comment"].lower():
+                        return revisions[i-1]["user"],revisions[i-1]["timestamp"]
+                i+=1
+        last = revisions.pop()
+        return [last["user"],last["timestamp"]]
+                
 def getLastEdit(title):
     last = getHistory(title).pop()
     return [last["user"],last["timestamp"]]
