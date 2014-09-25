@@ -41,13 +41,13 @@ def formatArray(database):
 
 def getAllCases(ctype):
     if ctype=="inprogress":return getCurrentCases('SPI cases currently being checked')
-    if ctype=="endorse":return getCurrentCases('SPI cases awaiting a CheckUser‎')
+    if ctype=="endorsed":return getCurrentCases('SPI cases awaiting a CheckUser‎')
     if ctype=="relist":return getCurrentCases('SPI cases relisted for a checkuser')
     if ctype=="curequest":return getCurrentCases('SPI cases requesting a checkuser‎')
     if ctype=="checked":return getCurrentCases('SPI cases CU complete')
     if ctype=="ADMIN":return getCurrentCases('SPI requests needing an Administrator')
-    if ctype=="decline":return getCurrentCases('SPI cases declined for checkuser by clerk‎')
-    if ctype=="cudecline":return getCurrentCases('SPI cases declined for checkuser by CU‎')
+    if ctype=="declined":return getCurrentCases('SPI cases declined for checkuser by clerk‎')
+    if ctype=="cudeclined":return getCurrentCases('SPI cases declined for checkuser by CU‎')
     if ctype=="open":return getCurrentCases('SPI cases awaiting review‎')
     if ctype=="moreinfo":return getCurrentCases('SPI cases requesting more information‎')
     if ctype=="hold":return getCurrentCases('SPI cases on hold by clerk‎')
@@ -109,7 +109,7 @@ def caseProcessor():
 !Investigation!!Status!!Filer!!Date filed!!timestamp!!Last user to edit case!!Last clerk/checkuser to edit case
 |-
 """
-    caseTypes=["inprogress","endorse","relist","curequest","checked","ADMIN","decline","cudecline","open","moreinfo","hold","cuhold","close"]
+    caseTypes=["inprogress","endorsed","relist","curequest","checked","ADMIN","declined","cudeclined","open","moreinfo","hold","cuhold","close"]
     for entry in caseTypes:
         caselist=getAllCases(entry)
         if caselist == None:
