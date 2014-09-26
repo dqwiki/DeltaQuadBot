@@ -126,9 +126,9 @@ def caseProcessor():
             filer = filer[0]
             timestamp = lastEdit[1]
             lastEdit = lastEdit[0]
-            if len(filer)>25:filer="[[WP:IPv6|An IPv6 address]]
+            if len(filer)>25:filer="[[WP:IPv6|An IPv6 address]]"
             else:filer="[[User:"+filer+"|"+filer+"]]"
-            if len(lastEdit)>25:lastEdit="[[WP:IPv6|An IPv6 address]]
+            if len(lastEdit)>25:lastEdit="[[WP:IPv6|An IPv6 address]]"
             else:lastEdit="[[User:"+lastEdit+"|"+lastEdit+"]]"
             table+=formatTableRow(case.split("/")[1],entry,filer,dateFiled,lastEdit,timestamp,lastClerk)+"\n"
     table+="|}"
