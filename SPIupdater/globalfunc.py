@@ -106,7 +106,7 @@ def formatTableRow(case, status,filer,dateFiled,lastEdit,timestamp,lastClerk):
 def caseProcessor():
     table="""
 {|class="wikitable sortable" width="100%"
-!Investigation!!Status!!Filer!!Date filed!!timestamp!!Last user to edit case!!Last clerk/checkuser<br> to edit case
+!Investigation!!Status!!Filer!!Date filed!!Last user to edit case!!timestamp!!Last clerk/checkuser to edit case
 |-
 """
     caseTypes=["inprogress","endorsed","relist","curequest","checked","ADMIN","declined","cudeclined","open","moreinfo","hold","cuhold","close"]
@@ -126,6 +126,10 @@ def caseProcessor():
             filer = filer[0]
             timestamp = lastEdit[1]
             lastEdit = lastEdit[0]
+            if len(filer)>25:filer="[[WP:IPv6|An IPv6 address]]
+            else:filer="[[User:"+filer+"|"+filer+"]]"
+            if len(lastEdit)>25:lastEdit="[[WP:IPv6|An IPv6 address]]
+            else:lastEdit="[[User:"+lastEdit+"|"+lastEdit+"]]"
             table+=formatTableRow(case.split("/")[1],entry,filer,dateFiled,lastEdit,timestamp,lastClerk)+"\n"
     table+="|}"
     site = wikipedia.getSite()
