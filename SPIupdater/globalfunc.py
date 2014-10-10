@@ -70,10 +70,16 @@ def getHistory(title):
     history = history["query"]["pages"][pageid]['revisions']
     return history
 def getFiler(revisions):
+        print "******************************************"
         i=0
         for revision in revisions:
-                if "archive" in revision["comment"].lower() or "archiving" in revision["comment"].lower():
-                        return revisions[i-1]["user"],revisions[i-1]["timestamp"]
+                print "-------------------------------------"
+                print revision
+                try:
+                        if "archiv" in revision["comment"].lower():# or "archiving" in revision["comment"].lower():
+                                return revisions[i-1]["user"],revisions[i-1]["timestamp"]
+                except:
+                        null=1 #nullifier due to "commenthidden"
                 i+=1
         last = revisions.pop()
         return [last["user"],last["timestamp"]]
@@ -136,5 +142,5 @@ def caseProcessor():
     site = wikipedia.getSite()
     pagename = "User:DeltaQuad/SPI case list"
     page = wikipedia.Page(site, pagename)
-    page.put(table, comment="Updating SPI caselist")
+    #page.put(table, comment="Updating SPI caselist")
 caseProcessor()
