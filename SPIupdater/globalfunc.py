@@ -70,11 +70,8 @@ def getHistory(title):
     history = history["query"]["pages"][pageid]['revisions']
     return history
 def getFiler(revisions):
-        print "******************************************"
         i=0
         for revision in revisions:
-                print "-------------------------------------"
-                print revision
                 try:
                         if "archiv" in revision["comment"].lower():# or "archiving" in revision["comment"].lower():
                                 return revisions[i-1]["user"],revisions[i-1]["timestamp"]
