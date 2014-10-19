@@ -89,17 +89,25 @@ def getLastClerk(title):
     revisions = getHistory(title)
     i=0
     while True:
+        print '-----------------------------------------'
         try:last = revisions[i]
-        except:return "None"
+        except:
+                print "!!!!NO!!!!"
+                return "None"
         #except:return ""
+        print "Last: "
+        print last
         site = wikipedia.getSite()
         pagename = "User:DeltaQuad/Clerks list"
         page = wikipedia.Page(site, pagename)
         clerks = page.get()
-        if last["user"] in clerks:
-            return last["user"]
-        if "archive" in last["comment"].lower() or "archiving" in last["comment"].lower():
-            return "None"
+        try:
+                if last["user"] in clerks:
+                    return last["user"]
+                if "archive" in last["comment"].lower() or "archiving" in last["comment"].lower():
+                    return "None"
+        except:
+                null=1#placeholder
         i+=1
     return "None"
     
