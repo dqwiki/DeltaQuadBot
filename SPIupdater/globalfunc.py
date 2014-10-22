@@ -89,14 +89,14 @@ def getLastClerk(title):
     revisions = getHistory(title)
     i=0
     while True:
-        print '-----------------------------------------'
+        #print '-----------------------------------------'
         try:last = revisions[i]
         except:
                 print "!!!!NO!!!!"
                 return "None"
         #except:return ""
-        print "Last: "
-        print last
+        #print "Last: "
+        #print last
         site = wikipedia.getSite()
         pagename = "User:DeltaQuad/Clerks list"
         page = wikipedia.Page(site, pagename)
@@ -142,10 +142,12 @@ def caseProcessor():
             else:filer="[[User:"+filer+"|"+filer+"]]"
             if len(lastEdit)>25:lastEdit="[[User:"+filer+"|An IPv6 address]]"
             else:lastEdit="[[User:"+lastEdit+"|"+lastEdit+"]]"
-            table+=formatTableRow(case.split("/")[1],entry,filer,dateFiled,lastEdit,timestamp,lastClerk)+"\n"
+            try:table+=formatTableRow(case.split("/")[1],entry,filer,dateFiled,lastEdit,timestamp,lastClerk)+"\n"
+            except:
+                    print 'Main SPI page ignored'
     table+="|}"
     site = wikipedia.getSite()
     pagename = "User:DeltaQuad/SPI case list"
     page = wikipedia.Page(site, pagename)
-    page.put(table, comment="Updating SPI caselist")
+    #page.put(table, comment="Updating SPI caselist")
 caseProcessor()
