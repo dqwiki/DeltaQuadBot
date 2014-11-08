@@ -112,13 +112,13 @@ def checkUser(user,waittilledit,noEdit):
                 print trace # Print.
                 return
         flags = str(bltest[2])
+        if searchlist(user, "wl"):
+                return
         if bltest[0]:
-                if searchlist(user, "wl"):
-                        return
-                elif noEdit:
-                        print'No edit - 1' + str(bltest[1]) +" "+ str(bltest[2])
+                if noEdit:
+                        #print 'No edit - 1' + str(bltest[1]) +" "+ str(bltest[2])
                         return 
-                else: post(user,str(bltest[1]),str(bltest[2]),str(waittilledit))
+                else:return post(user,str(bltest[1]),str(bltest[2]),str(waittilledit))
         if "NO_SIM_MATCH" in flags:return
         slcheck = searchlist(user, "sl")
         if slcheck == True:a=1
@@ -126,13 +126,13 @@ def checkUser(user,waittilledit,noEdit):
         try:
                 if not slcheck[0] and not bltest[0]:
                         if noEdit:
-                                print "No edit - 2 "+str(slcheck[1]) +" "+ str(slcheck[2])
+                                #print "No edit - 2 "+str(slcheck[1]) +" "+ str(slcheck[2])
                                 return
                         return post(user,str(slcheck[1]),str(slcheck[2]),str(waittilledit))
         except:
                 if not slcheck and not bltest[0]:
                         if noEdit:
-                                print "No edit - 3"+str(slcheck[1]) +" "+ str(slcheck[2])
+                                #print "No edit - 3"+str(slcheck[1]) +" "+ str(slcheck[2])
                                 return
                         return post(user,str(slcheck[1]),str(slcheck[2]),str(waittilledit))
         return
