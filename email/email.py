@@ -16,7 +16,8 @@ def post(num,date):
 <br />{{fontcolor|green|'''Current number of messages that need reply''':}} %s
 <br />{{fontcolor|green|I have a light work week and some <br />things going on, replies to messages <!--will be delayed--><br />will likely get a response within 24 hours.}}
 <small><br />If your message came on or after this date, your email is still being
-<br />attended to. If the date passes and you don't receive a reply, let me know.</small>
+<br />attended to. If the date passes and you don't receive a reply, let me know.
+<br />This page is automatically updated by [[User:DeltaQuadBot|a bot]].</small>
 """ % (str(date),str(num))
     print txt
     summary = "[[User:"+localconfig.botname+"|"+localconfig.botname+"]] "+ localconfig.primarytaskname
@@ -25,14 +26,21 @@ def post(num,date):
     page = wikipedia.Page(site, pagename)
     pagetxt = page.get()
     page.put(txt, comment=summary)
-mail = imaplib.IMAP4_SSL('imap.gmail.com')
-mail.login(localconfig.email,localconfig.password)
-mail.select("Inbox",readonly=True)
-listNums=' '.join(mail.search(None, "UnSeen")[1]).split(" ")
-num=len(listNums)
-date=getMsgDate(listNums[0])
-post(num,date)
-mail.close()
-mail.logout()
+    return
 
-
+def run():    
+        mail = imaplib.IMAP4_SSL('imap.gmail.com')
+        mail.login(localconfig.email,localconfig.password)
+        mail.select("Inbox",readonly=True)
+        listNums=' '.join(mail.search(None, "UnSeen")[1]).split(" ")
+        if listNums==['']:num=0
+        else:num=len(listNums)
+        if num==0:
+                post(num,date="NULL")
+                return
+        date=getMsgDate(listNums[0])
+        post(num,date)
+        mail.close()
+        mail.logout()
+        return
+run()
