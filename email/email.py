@@ -4,8 +4,8 @@ if platform.system() == "Windows":
 else:sys.path.append(localconfig.linuxpath)
 import wikipedia
 
-def getMsgDate(messagenum):
-    msg= mail.fetch(messagenum,'(RFC822)')[1][0][1]
+def getMsgDate(messagenum,mailserver):
+    msg= mailserver.fetch(messagenum,'(RFC822)')[1][0][1]
     date= msg.split("Return-Path:")[0].split(";")[1]
     date=date.replace("\r\n","")
     date=date.replace("        ","")
@@ -38,7 +38,7 @@ def run():
         if num==0:
                 post(num,date="NULL")
                 return
-        date=getMsgDate(listNums[0])
+        date=getMsgDate(listNums[0],mail)
         post(num,date)
         mail.close()
         mail.logout()
