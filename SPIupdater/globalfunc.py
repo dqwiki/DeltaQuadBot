@@ -102,7 +102,6 @@ def getLastClerk(title):
         page = wikipedia.Page(site, pagename)
         clerks = page.get()
         try:
-                print last
                 if "archive" in last["comment"].lower() or "archiving" in last["comment"].lower():
                     return "None"
                 if last["user"] in clerks:
