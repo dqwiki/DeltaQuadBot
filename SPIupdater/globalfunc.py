@@ -102,10 +102,11 @@ def getLastClerk(title):
         page = wikipedia.Page(site, pagename)
         clerks = page.get()
         try:
-                if last["user"] in clerks:
-                    return last["user"]
+                print last
                 if "archive" in last["comment"].lower() or "archiving" in last["comment"].lower():
                     return "None"
+                if last["user"] in clerks:
+                    return last["user"]
         except:
                 null=1#placeholder
         i+=1
@@ -138,9 +139,9 @@ def caseProcessor():
             filer = filer[0]
             timestamp = lastEdit[1]
             lastEdit = lastEdit[0]
-            if len(filer)>25:filer="[[User:"+filer+"|An IPv6 address]]"
+            if len(filer)>30:filer="[[User:"+filer+"|An IPv6 address]]"
             else:filer="[[User:"+filer+"|"+filer+"]]"
-            if len(lastEdit)>25:lastEdit="[[User:"+filer+"|An IPv6 address]]"
+            if len(lastEdit)>30:lastEdit="[[User:"+filer+"|An IPv6 address]]"
             else:lastEdit="[[User:"+lastEdit+"|"+lastEdit+"]]"
             try:table+=formatTableRow(case.split("/")[1],entry,filer,dateFiled,lastEdit,timestamp,lastClerk)+"\n"
             except:
