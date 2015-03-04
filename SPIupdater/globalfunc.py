@@ -45,7 +45,7 @@ def getAllCases(ctype):
     if ctype=="relist":return getCurrentCases('SPI cases relisted for a checkuser')
     if ctype=="curequest":return getCurrentCases('SPI cases requesting a checkuser‎')
     if ctype=="checked":return getCurrentCases('SPI cases CU complete')
-    if ctype=="ADMIN":return getCurrentCases('SPI requests needing an Administrator')
+    if ctype=="ADMIN":return getCurrentCases('SPI cases needing an Administrator')
     if ctype=="declined":return getCurrentCases('SPI cases declined for checkuser by clerk‎')
     if ctype=="cudeclined":return getCurrentCases('SPI cases declined for checkuser by CU‎')
     if ctype=="open":return getCurrentCases('SPI cases awaiting review‎')
