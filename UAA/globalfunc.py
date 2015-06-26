@@ -39,7 +39,7 @@ def checkRegisterTime(user, maxDays,advanced):
         """Returns True if the given user is more than maxDays old, else False."""
         maxSeconds = maxDays * 24 * 60 * 60
         site = wikipedia.getSite()
-        params = {"action": "query", "list": "users", "ususers": user, "format": "json", "usprop": "registration"}
+        params = {"action": "query", "list": "users", "ususers": user, "format": "json", "usprop": "registration","rawcontinue":"1"}
         response, raw = site.postForm(site.apipath(), params)
         result = json.loads(raw)
         try:reg = result["query"]["users"][0]["registration"]
@@ -146,6 +146,7 @@ def main():
         	'leend':checkLastRun(),
         	'lelimit':'5000',
         	'leprop':'user',
+                'rawcontinue':'1',
         	'format':'json'        
                 }
         response, raw = site.postForm(site.apipath(), params)
@@ -168,7 +169,8 @@ def runDry():
         	'leend':checkLastRun(),
         	'lelimit':'5000',
         	'leprop':'user',
-        	'format':'json'        
+        	'format':'json',
+                'rawcontinue':'1'
                 }
         response, raw = site.postForm(site.apipath(), params)
         result = json.loads(raw)

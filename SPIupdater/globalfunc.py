@@ -21,7 +21,8 @@ def getCurrentCases(category):
         	'cmtitle': category,
                 'cmnamespace':'4',
                 'cmlimit':'500',
-                'format':'json'
+                'format':'json',
+                'rawcontinue':'1'
                 }
     response, raw = site.postForm(site.apipath(), params)
     result = json.loads(raw)
@@ -61,7 +62,8 @@ def getHistory(title):
               'titles':title,
               'rvlimit':'500',
               'rvprop':'timestamp|user|comment|size',
-              'format':'json'}
+              'format':'json'
+              'rawcontinue':'1'}
     response, raw = site.postForm(site.apipath(), params)
     history = json.loads(raw)
     full = history["query"]["pages"]
@@ -92,7 +94,7 @@ def getLastClerk(title):
         #print '-----------------------------------------'
         try:last = revisions[i]
         except:
-                print "!!!!NO!!!!"
+                #print "!!!!NO!!!!"
                 return "None"
         #except:return ""
         #print "Last: "
