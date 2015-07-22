@@ -130,12 +130,14 @@ def checkUser(user,waittilledit,noEdit):
                         if noEdit:
                                 print "No edit - 2 "+str(slcheck[1]) +" "+ str(slcheck[2])
                                 return
+                        print "Posted"
                         return #post(user,str(slcheck[1]),str(slcheck[2]),str(waittilledit))
         except:
                 if not slcheck and not bltest[0]:
                         if noEdit:
                                 print "No edit - 3"+str(slcheck[1]) +" "+ str(slcheck[2])
                                 return
+                        print "Posted"
                         return #post(user,str(slcheck[1]),str(slcheck[2]),str(waittilledit))
         return
 def main():
