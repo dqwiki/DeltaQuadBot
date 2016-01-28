@@ -62,7 +62,7 @@ def getHistory(title):
               'titles':title,
               'rvlimit':'500',
               'rvprop':'timestamp|user|comment|size',
-              'format':'json'
+              'format':'json',
               'rawcontinue':'1'}
     response, raw = site.postForm(site.apipath(), params)
     history = json.loads(raw)
