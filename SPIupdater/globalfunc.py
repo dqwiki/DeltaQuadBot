@@ -118,6 +118,7 @@ def formatTableRow(case, status,filer,dateFiled,lastEdit,timestamp,lastClerk):
     return "{{SPIstatusentry|" + case + "|" + status + "|" + filer + "|" + dateFiled + "|" + lastEdit + "|" + timestamp + "|" + lastClerk +"}}"
 
 def caseHistoryCompile(caseTypes):
+        table=""
         for entry in caseTypes:
                 caselist=getAllCases(entry)
                 if caselist == None:
@@ -138,10 +139,10 @@ def caseHistoryCompile(caseTypes):
                     else:filer="[[User:"+filer+"|"+filer+"]]"
                     if len(lastEdit)>30:lastEdit="[[User:"+filer+"|An IPv6 address]]"
                     else:lastEdit="[[User:"+lastEdit+"|"+lastEdit+"]]"
-                    try:return formatTableRow(case.split("/")[1],entry,filer,dateFiled,lastEdit,timestamp,lastClerk)+"\n"
+                    try:table+=formatTableRow(case.split("/")[1],entry,filer,dateFiled,lastEdit,timestamp,lastClerk)+"\n"
                     except:
                             print 'Main SPI page ignored'
-                            return
+        return table
 
 def addHeader(name):
         return "\n== "+name+" ==\n"
