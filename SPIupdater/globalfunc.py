@@ -117,39 +117,73 @@ def getLastClerk(title):
 def formatTableRow(case, status,filer,dateFiled,lastEdit,timestamp,lastClerk):
     return "{{SPIstatusentry|" + case + "|" + status + "|" + filer + "|" + dateFiled + "|" + lastEdit + "|" + timestamp + "|" + lastClerk +"}}"
 
-def caseProcessor():
-    table="""
+def caseHistoryCompile(caseTypes):
+        for entry in caseTypes:
+                caselist=getAllCases(entry)
+                if caselist == None:
+                    continue
+                for case in caselist:
+                    history=getHistory(case)
+                    historyDup=history
+                    filer=getFiler(history)
+                    lastEdit=getLastEdit(case)
+                    lastClerk=getLastClerk(case)
+                    if lastClerk=="None":lastClerk=""
+
+                    dateFiled=filer[1]
+                    filer = filer[0]
+                    timestamp = lastEdit[1]
+                    lastEdit = lastEdit[0]
+                    if len(filer)>30:filer="[[User:"+filer+"|An IPv6 address]]"
+                    else:filer="[[User:"+filer+"|"+filer+"]]"
+                    if len(lastEdit)>30:lastEdit="[[User:"+filer+"|An IPv6 address]]"
+                    else:lastEdit="[[User:"+lastEdit+"|"+lastEdit+"]]"
+                    try:return formatTableRow(case.split("/")[1],entry,filer,dateFiled,lastEdit,timestamp,lastClerk)+"\n"
+                    except:
+                            print 'Main SPI page ignored'
+                            return
+
+def addHeader(name):
+        return "\n== "+name+" ==\n"
+
+def makeTable(content)
+        tabletop="""
 {|class="wikitable sortable" width="100%"
 !Investigation!!Status!!Filer!!Date filed!!Last user to<br /> edit case!!timestamp!!Last clerk/CU<br /> to edit case
 |-
 """
-    caseTypes=["inprogress","endorsed","relist","curequest","checked","ADMIN","declined","cudeclined","open","moreinfo","hold","cuhold","close"]
-    for entry in caseTypes:
-        caselist=getAllCases(entry)
-        if caselist == None:
-            continue
-        for case in caselist:
-            history=getHistory(case)
-            historyDup=history
-            filer=getFiler(history)
-            lastEdit=getLastEdit(case)
-            lastClerk=getLastClerk(case)
-            if lastClerk=="None":lastClerk=""
-
-            dateFiled=filer[1]
-            filer = filer[0]
-            timestamp = lastEdit[1]
-            lastEdit = lastEdit[0]
-            if len(filer)>30:filer="[[User:"+filer+"|An IPv6 address]]"
-            else:filer="[[User:"+filer+"|"+filer+"]]"
-            if len(lastEdit)>30:lastEdit="[[User:"+filer+"|An IPv6 address]]"
-            else:lastEdit="[[User:"+lastEdit+"|"+lastEdit+"]]"
-            try:table+=formatTableRow(case.split("/")[1],entry,filer,dateFiled,lastEdit,timestamp,lastClerk)+"\n"
-            except:
-                    print 'Main SPI page ignored'
-    table+="|}"
+        tablebottom="|}"
+        return tabletop + content + tablebottom
+def caseProcessor():
+    #All cases table
+    categories=["inprogress","endorsed","relist","curequest","checked","ADMIN","declined","cudeclined","open","moreinfo","hold","cuhold","close"]
+    leadtable = makeTable(caseHistoryCompile(categories))
+    #CU review table
+    categories=["curequest"]
+    curtable = addHeader("CU Review Cases")+makeTable(caseHistoryCompile(categories))
+    #CU endorsed table
+    categories=["endorsed","relist"]
+    cuetable = addHeader("CU Endorsed Cases")+makeTable(caseHistoryCompile(categories))
+    #CU decline table
+    categories=["declined","cudeclined"]
+    cudtable = addHeader("CU Declined Cases")+makeTable(caseHistoryCompile(categories))
+    #Open table
+    categories=["open"]
+    otable = addHeader("Open Cases")+makeTable(caseHistoryCompile(categories))
+    #Wait table
+    categories=["inprogress","ADMIN","moreinfo","hold","cuhold"]
+    wtable = addHeader("Waiting Cases")+makeTable(caseHistoryCompile(categories))
+    #Other table
+    categories=["inprogress","endorsed","relist","curequest","checked","ADMIN","declined","cudeclined","open","moreinfo","hold","cuhold","close"]
+    ottable = addHeader("Other Cases")+makeTable(caseHistoryCompile(categories))
+    #Archive table
+    categories=["close"]
+    arctable = addHeader("To Archive Cases")+makeTable(caseHistoryCompile(categories))
+    
+    
+    final = leadtable + curtable + cuetable + cudtable + otable + wtable + ottable + arctable
     site = wikipedia.getSite()
     pagename = "User:DeltaQuad/SPI case list"
     page = wikipedia.Page(site, pagename)
-    page.put(table, comment="Updating SPI caselist")
+    page.put(final, comment="Updating SPI caselist")
 caseProcessor()
