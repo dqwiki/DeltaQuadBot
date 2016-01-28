@@ -156,35 +156,51 @@ def makeTable(content):
         tablebottom="|}"
         return tabletop + content + tablebottom
 def caseProcessor():
-    #All cases table
-    categories=["inprogress","endorsed","relist","curequest","checked","ADMIN","declined","cudeclined","open","moreinfo","hold","cuhold","close"]
-    leadtable = makeTable(caseHistoryCompile(categories))
-    #CU review table
-    categories=["curequest"]
-    curtable = addHeader("CU Review Cases")+makeTable(caseHistoryCompile(categories))
-    #CU endorsed table
+    #All cases table - not needed complied below
+    print "CU results table"
+    categories=["checked"]
+    curstable = caseHistoryCompile(categories)
+    cursftable = addHeader("CU Result Cases")+makeTable(curstable)
+    print "!!!DONE!!!"
+    print "CU endorsed table"
     categories=["endorsed","relist"]
-    cuetable = addHeader("CU Endorsed Cases")+makeTable(caseHistoryCompile(categories))
-    #CU decline table
+    cuetable = caseHistoryCompile(categories)
+    cueftable = addHeader("CU Endorsed Cases")+makeTable(cuetable)
+    print "!!!DONE!!!"
+    print "CU review table"
+    categories=["curequest"]
+    curtable = caseHistoryCompile(categories)
+    curftable = addHeader("CU Review Cases")+makeTable(curtable)
+    print "!!!DONE!!!"
+    print "CU decline table"
     categories=["declined","cudeclined"]
-    cudtable = addHeader("CU Declined Cases")+makeTable(caseHistoryCompile(categories))
-    #Open table
+    cudtable = caseHistoryCompile(categories)
+    cudftable = addHeader("CU Declined Cases")+makeTable(cudtable)
+    print "!!!DONE!!!"
+    print "Open table"
     categories=["open"]
-    otable = addHeader("Open Cases")+makeTable(caseHistoryCompile(categories))
-    #Wait table
+    otable = caseHistoryCompile(categories)
+    oftable = addHeader("Open Cases")+makeTable(otable)
+    print "!!!DONE!!!"
+    print "Wait table"
     categories=["inprogress","ADMIN","moreinfo","hold","cuhold"]
-    wtable = addHeader("Waiting Cases")+makeTable(caseHistoryCompile(categories))
-    #Other table
-    categories=["inprogress","endorsed","relist","curequest","checked","ADMIN","declined","cudeclined","open","moreinfo","hold","cuhold","close"]
-    ottable = addHeader("Other Cases")+makeTable(caseHistoryCompile(categories))
-    #Archive table
+    wtable = caseHistoryCompile(categories)
+    wftable = addHeader("Waiting Cases")+makeTable(wtable)
+    print "!!!DONE!!!"
+    print "Archive table"
     categories=["close"]
-    arctable = addHeader("To Archive Cases")+makeTable(caseHistoryCompile(categories))
+    arctable = caseHistoryCompile(categories)
+    arcftable = addHeader("To Archive Cases")+makeTable(arctable)
+    print "!!!DONE!!!"
+    print "Processing master table..."
     
-    
-    final = leadtable + curtable + cuetable + cudtable + otable + wtable + ottable + arctable
+    leadtable = "__TOC__\n" + makeTable(curtable + cuetable + cudtable + otable + wtable + curstable + arctable)
+    final = leadtable + curftable + cueftable + cudftable + oftable + wftable + cursftable + arcftable
+    print "!!!DONE!!!"
+    print "----POSTING----"
     site = wikipedia.getSite()
     pagename = "User:DeltaQuad/SPI case list"
     page = wikipedia.Page(site, pagename)
     page.put(final, comment="Updating SPI caselist")
+    print "!!!DONE!!!"
 caseProcessor()
