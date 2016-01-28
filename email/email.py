@@ -7,6 +7,8 @@ import wikipedia
 def getMsgDate(messagenum,mailserver):
     msg= mailserver.fetch(messagenum,'(RFC822)')[1][0][1]
     date= msg.split("Return-Path:")[0].split(";")[1]
+    try: date= date.split("X-Received")[0]
+    except: x=1#null statement
     date=date.replace("\r\n","")
     date=date.replace("        ","")
     date=date.split("(PST)")[0]
@@ -14,7 +16,7 @@ def getMsgDate(messagenum,mailserver):
 def post(num,date):
     txt="""{{fontcolor|green|'''Last message without a reply''':}} %s
 <br />{{fontcolor|green|'''Current number of messages that need reply''':}} %s
-<br />{{fontcolor|green|I have a light work week and some <br />things going on, replies to messages <!--will be delayed--><br />will likely get a response within 24 hours.}}
+<br />{{fontcolor|red|Normal response times are about 72 hours currently <br />due to the amount of email I am receiving.<br />The most urgent of emails will be responded to first,<br />and there may be additional delay beyond 72 hours.}}
 <small><br />If your message came on or after this date, your email is still being
 <br />attended to. If the date passes and you don't receive a reply, let me know.
 <br />This page is automatically updated by [[User:DeltaQuadBot|a bot]].</small>
