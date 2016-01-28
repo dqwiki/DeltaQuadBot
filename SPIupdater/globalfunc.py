@@ -146,7 +146,7 @@ def caseHistoryCompile(caseTypes):
 def addHeader(name):
         return "\n== "+name+" ==\n"
 
-def makeTable(content)
+def makeTable(content):
         tabletop="""
 {|class="wikitable sortable" width="100%"
 !Investigation!!Status!!Filer!!Date filed!!Last user to<br /> edit case!!timestamp!!Last clerk/CU<br /> to edit case
