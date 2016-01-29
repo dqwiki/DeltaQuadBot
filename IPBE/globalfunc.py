@@ -21,7 +21,9 @@ def getUserList():
         for user in reg:
                 username = user["name"]
                 userlist = userlist+ "\n"+"*{{User|"+user["name"]+"}}"
-                detaillist = detaillist + "\n*" + query(username)
+                try:detaillist = detaillist + "\n*" + query(username)
+		except:
+			print "FAILED - " + username
         sendPage(userlist, "raw")
         sendPage(detaillist, "list")
         return
@@ -33,7 +35,8 @@ def query(user):
          'list': 'logevents',
          'letype': 'rights',
          'letitle':letitle,
-         'format':'json'
+         'format':'json',
+	 'lelimit':'100'
               }
         #print 'LETITLE: ' +letitle
         response, raw = site.postForm(site.apipath(), predata)
@@ -41,8 +44,8 @@ def query(user):
         log = result["query"]["logevents"]
         #print log
         for event in log:
-                if event["rights"]["old"] == "": event["rights"]["old"]="None"
-                if not "ipblock-exempt" in event["rights"]["old"] and "ipblock-exempt" in event["rights"]["new"]:return event["timestamp"]+ " [[User:" + event["user"] + "|" + event["user"] + "]] ([[User talk:" + event["user"] + "|talk]] | [[Special:Contributions/" + event["user"] + "|contribs]] | [[Special:Block/" + event["user"] + "|block]])" + " changed rights for [[" +event["title"] + "]] from " + event["rights"]["old"] + " to " + event["rights"]["new"] + " per '" + event["comment"] + "'"
+                if event["params"]["oldgroups"] == '': event["params"]["oldgroups"]="None"
+                if not "ipblock-exempt" in event["params"]["oldgroups"] and "ipblock-exempt" in event["params"]["newgroups"]:return event["timestamp"]+ " [[User:" + event["user"] + "|" + event["user"] + "]] ([[User talk:" + event["user"] + "|talk]] | [[Special:Contributions/" + event["user"] + "|contribs]] | [[Special:Block/" + event["user"] + "|block]])" + " changed rights for [[" +event["title"] + "]] from " + ','.join(event["params"]["oldgroups"]) + " to " + ','.join(event["params"]["newgroups"]) + " per '" + event["comment"] + "'"
                 #print "Event: "+event["timestamp"]+ " " + event["user"] + " changed userrights for " +event["title"] + " from " + event["rights"]["old"] + " to " + event["rights"]["new"] + " because " + event["comment"]
 def sendPage(text, txtformat):
     #print text
