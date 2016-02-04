@@ -10,8 +10,7 @@ import localconfig
 if platform.system() == "Windows":
         sys.path.append(localconfig.winpath)
 else:sys.path.append(localconfig.linuxpath)
-import wikipedia
-import userlib
+import pywikibot
 
 def getCurrentCases(category):
     category = "Category:" + category
