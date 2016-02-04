@@ -14,7 +14,7 @@ import pywikibot
 
 def getCurrentCases(category):
     category = "Category:" + category
-    site= wikipedia.getSite()
+    site= pywikibot.getSite()
     params = {'action': 'query',
         	'list': 'categorymembers',
         	'cmtitle': category,
@@ -55,7 +55,7 @@ def getAllCases(ctype):
     if ctype=="close":return getCurrentCases('SPI cases awaiting archive‎')
 
 def getHistory(title):
-    site= wikipedia.getSite()
+    site= pywikibot.getSite()
     params = {'action':'query',
               'prop':'revisions',
               'titles':title,
@@ -98,9 +98,9 @@ def getLastClerk(title):
         #except:return ""
         #print "Last: "
         #print last
-        site = wikipedia.getSite()
+        site = pywikibot.getSite()
         pagename = "User:DeltaQuad/Clerks list"
-        page = wikipedia.Page(site, pagename)
+        page = pywikibot.Page(site, pagename)
         clerks = page.get()
         try:
                 if "archive" in last["comment"].lower() or "archiving" in last["comment"].lower():
@@ -188,9 +188,9 @@ def caseProcessor():
     final = cursftable + cueftable + curftable + cudftable + oftable + wftable + arcftable
     print "!!!DONE!!!"
     print "----POSTING----"
-    site = wikipedia.getSite()
+    site = pywikibot.getSite()
     pagename = "User:DeltaQuad/SPI case list"
-    page = wikipedia.Page(site, pagename)
+    page = pywikibot.Page(site, pagename)
     page.put(final, comment="Updating SPI caselist")
     print "!!!DONE!!!"
 caseProcessor()
