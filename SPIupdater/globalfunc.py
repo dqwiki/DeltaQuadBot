@@ -11,6 +11,9 @@ if platform.system() == "Windows":
         sys.path.append(localconfig.winpath)
 else:sys.path.append(localconfig.linuxpath)
 import pywikibot
+from pywikibot.data import api
+
+useWiki= pywikibot.Site('en','wikipedia')
 
 def getCurrentCases(category):
     category = "Category:" + category
@@ -23,9 +26,10 @@ def getCurrentCases(category):
                 'format':'json',
                 'rawcontinue':'1'
                 }
-    response, raw = site.postForm(site.apipath(), params)
-    result = json.loads(raw)
-    reg = result["query"]["categorymembers"]
+    req = api.Request(useWiki, **params)
+    raw = req.submit()
+    reg = raw["query"]["categorymembers"]
+    print reg
     reg = formatArray(reg)
     return reg
 
