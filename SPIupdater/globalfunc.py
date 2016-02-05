@@ -15,6 +15,10 @@ from pywikibot.data import api
 
 useWiki= pywikibot.Site('en','wikipedia')
 
+def callAPI(params):
+    req = api.Request(useWiki, **params)
+    return req.submit()
+
 def getCurrentCases(category):
     category = "Category:" + category
     site= pywikibot.getSite()
@@ -26,10 +30,8 @@ def getCurrentCases(category):
                 'format':'json',
                 'rawcontinue':'1'
                 }
-    req = api.Request(useWiki, **params)
-    raw = req.submit()
+    raw = callAPI(params)
     reg = raw["query"]["categorymembers"]
-    print reg
     reg = formatArray(reg)
     return reg
 
@@ -67,8 +69,7 @@ def getHistory(title):
               'rvprop':'timestamp|user|comment|size',
               'format':'json',
               'rawcontinue':'1'}
-    response, raw = site.postForm(site.apipath(), params)
-    history = json.loads(raw)
+    history = callAPI(params)
     full = history["query"]["pages"]
     for singleid in full:
         pageid = singleid
