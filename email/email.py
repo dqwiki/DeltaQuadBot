@@ -1,8 +1,9 @@
+# -*-coding: utf-8 -*-
 import sys,imaplib,localconfig,platform
 if platform.system() == "Windows":
         sys.path.append(localconfig.winpath)
 else:sys.path.append(localconfig.linuxpath)
-import wikipedia
+import pywikibot
 
 def getMsgDate(messagenum,mailserver):
     msg= mailserver.fetch(messagenum,'(RFC822)')[1][0][1]
@@ -23,9 +24,9 @@ def post(num,date):
 """ % (str(date),str(num))
     print txt
     summary = "[[User:"+localconfig.botname+"|"+localconfig.botname+"]] "+ localconfig.primarytaskname
-    site = wikipedia.getSite()
+    site = pywikibot.Site('wikipedia','en')
     pagename = localconfig.postpage
-    page = wikipedia.Page(site, pagename)
+    page = pywikibot.Page(site, pagename)
     pagetxt = page.get()
     page.put(txt, comment=summary)
     return
